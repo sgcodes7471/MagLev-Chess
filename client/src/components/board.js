@@ -109,11 +109,6 @@ const Board = ({grid})=>{
                 if(response.isCheck) setInfo('That is a Check!')
                 //checks for a check
 
-                if(response.isCheckmate){
-                    setInfo('That is a Checkmate! Game Ends')
-                    navigate(-1)
-                }
-
                 if(response.capturedPiece) setDead(dead=>[...dead , `${move.color==='w'?'b':'w'}${response.capturedPiece}`])
                 //adds any dead piece to the dead state array
 
@@ -145,8 +140,13 @@ const Board = ({grid})=>{
                     grid.set('d8' , rook)
                 }
 
+                if(response.isCheckmate){
+                    alert(`That is a Checkmate!`)
+                    navigate(-1)
+                }
+
                 setCurrent(null)
-                setInfo('')
+                if(!response.isCheck) setInfo('')
             }
             else {
                 setInfo('Invalid Move')
@@ -195,19 +195,13 @@ const Board = ({grid})=>{
         }
     },[])
 
+
     //a function to emit move to the socket server
     function emitMove({sourceSquare , targetSquare , currentPiece , promotion=null , flagComputer }){
         setInfo("")
         if(!socket) return
         socket.emit('move' , {sourceSquare , targetSquare , currentPiece , gameId:gameId , flagComputer , promotion })
     }
-
-    //a function to emit the message for castle
-    // function handleCastleMove(castleMove) {
-    //     if(!socket) return
-    //     setCastling({})
-    //     emitMove({sourceSquare:null , targetSquare:null , currentPiece:null , promotion:null , flagComputer:false , castleMove:castleMove})
-    // }
 
     const handlePromotionMove = (promotedTo)=>{
         setPromotePawn(false)
