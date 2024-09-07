@@ -3,9 +3,6 @@ const http = require('http');
 const socketIo = require('socket.io');
 const { Chess } = require('chess.js');
 const cors =require('cors');
-const calculateTimeSpent = require('./utils/timeSpent.js')
-const checkCastling = require('./utils/checkCastling.js')
-const getMoveFromStockfish = require('./utils/moveStockfish.js')
 const { LOCALHOST_URL, DEPLOYED_URL } = require('./constants');
 const Move = require('./utils/getMove.js');
 
@@ -126,7 +123,7 @@ io.on('connection', (socket) => {
 
     const game = games[gameId];
     const responseObject = await Move({io , game ,  sourceSquare, targetSquare , currentPiece , gameId , flagComputer , promotion , castleMove })
-    console.log(responseObject)
+    // console.log(responseObject)
     // const { chess, timer, currentPlayer, lastMoveTime, movesHistory } = game;
     // try {
     //   //if request for castling comes, then enters in this
